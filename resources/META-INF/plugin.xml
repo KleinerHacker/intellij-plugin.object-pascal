@@ -1,0 +1,42 @@
+<idea-plugin version="2">
+    <id>org.pcsoft.plugins.intellij.pascal</id>
+    <name>Object Pascal Support</name>
+    <version>0.1</version>
+    <vendor>PC-Soft</vendor>
+
+    <description><![CDATA[
+      Support Plugin for Object Pascal / Compiler and other useful features.
+      <b>You need a free Object Pascal compiler installation.</b>
+    ]]></description>
+
+    <change-notes><![CDATA[
+    ]]>
+    </change-notes>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="141.0"/>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- File Type & Parsing -->
+        <fileTypeFactory implementation="org.pcsoft.plugins.intellij.pascal.language.PascalFileTypeFactory"/>
+        <lang.parserDefinition language="Object Pascal"
+                               implementationClass="org.pcsoft.plugins.intellij.pascal.language.parser.PascalParserDefinition"/>
+        <!-- Highlighting -->
+        <lang.syntaxHighlighterFactory language="Object Pascal" implementationClass="org.pcsoft.plugins.intellij.pascal.language.highlighting.PascalSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="org.pcsoft.plugins.intellij.pascal.language.highlighting.PascalColoringPage"/>
+        <!-- Common -->
+        <lang.quoteHandler language="Object Pascal" implementationClass="org.pcsoft.plugins.intellij.pascal.language.common.PascalQuoteHandler"/>
+        <lang.braceMatcher language="Object Pascal" implementationClass="org.pcsoft.plugins.intellij.pascal.language.common.PascalBraceMatcher"/>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+
+</idea-plugin>

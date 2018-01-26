@@ -1,0 +1,133 @@
+{
+    parserClass="org.pcsoft.plugins.intellij.pascal.language.parser.PascalParser"
+    parserUtilClass="org.pcsoft.plugins.intellij.pascal.language.parser.PascalParserUtil"
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix="Pascal"
+    psiImplClassSuffix="Impl"
+    psiPackage="org.pcsoft.plugins.intellij.pascal.language.parser.psi.element"
+    psiImplPackage="org.pcsoft.plugins.intellij.pascal.language.parser.psi.element"
+
+    elementTypeHolderClass="org.pcsoft.plugins.intellij.pascal.language.parser.PascalGenTypes"
+    elementTypeClass="org.pcsoft.plugins.intellij.pascal.language.parser.psi.PascalElementType"
+    tokenTypeClass="org.pcsoft.plugins.intellij.pascal.language.parser.psi.PascalTokenType"
+
+    psiImplUtilClass="org.pcsoft.plugins.intellij.pascal.language.parser.psi.PascalPsiUtils"
+}
+
+pascalFile ::= programDeclaration | unitDeclaration
+
+programDeclaration ::= 'program' NAME ';' commonDeclarationBody programDeclarationBody
+unitDeclaration ::= 'unit' NAME ';' commonDeclarationBody
+
+private commonDeclarationBody ::= usesDeclaration? constantDeclaration? typeDeclaration? variableDeclaration? functionDeclaration?
+private programDeclarationBody ::= 'begin' statementList 'end' '.'?
+
+// Uses
+usesDeclaration ::= 'uses' usesValueList
+private usesValueList ::= (usesValue ',')* (usesValue ';')?
+usesValue ::= NAME
+
+// Constants
+constantDeclaration ::= 'const' constantDefinition*
+constantDefinition ::= constantName constantType? constantValue ';'
+constantName ::= NAME
+constantType ::= ':' referenceType
+constantValue ::= '=' value
+
+// Variables
+variableDeclaration ::= 'var' variableDefinition*
+variableDefinition ::= (variableName ',')* variableName ':' variableType ';'
+variableName ::= KEYWORD | NAME
+variableType ::= stringType | arrayType | referenceType
+
+// Properties
+propertyDefinition ::= 'property' propertyName ':' propertyType propertyRead? propertyWrite? propertyDefault? propertyStored? ';' functionFlag*
+propertyName ::= KEYWORD | NAME
+propertyType ::= type
+propertyRead ::= 'read' propertyReference
+propertyWrite ::= 'write' propertyReference
+propertyReference ::= KEYWORD | NAME
+propertyStored ::= 'stored' KEYWORD
+propertyDefault ::= 'default' value
+
+// Types
+typeDeclaration ::= 'type' typeDefinition*
+typeDefinition ::= typeName '=' typeSpecification ';'
+typeName ::= KEYWORD | NAME
+typeSpecification ::= classType | objectType | recordType | range | arrayType | referenceType | enumerationValue
+
+// Functions / Procedures
+functionDeclaration ::= functionDefinition+
+functionDefinition ::= functionType objectReferenceNameList functionName functionParameterList? functionReturn? ';' variableDeclaration? functionBody? functionFlag*
+functionType ::= 'function' | 'procedure' | 'constructor' | 'destructor'
+functionName ::= KEYWORD | NAME
+private functionParameterList ::= '(' (functionParameter ',')* functionParameter ')'
+functionParameter ::= (functionParameterName ',')* functionParameterName ':' type functionParameterDefault?
+functionParameterDefault ::= '=' value
+functionParameterName ::= KEYWORD | NAME
+functionReturn ::= ':' type
+private functionBody ::= 'begin' statementList 'end' ';'
+functionFlag ::= functionOverload | functionOverride | functionVirtual | functionDynamic
+functionOverload ::= 'overload' ';'
+functionOverride ::= 'override' ';'
+functionVirtual ::= 'virtual' ';'
+functionDynamic ::= 'dynamic' ';'
+
+// (Sub-)Program content
+private statementList ::= (statement ';')*
+statement ::= inheritedStatement | loopForStatement | assignmentStatement | functionCallStatement
+// Assignments
+assignmentStatement ::= referenceValue ':=' calculationStatement
+// Calculation
+calculationStatement ::= (calculationValue ('+'|'-'|'*'|'/'|'mod'|'div'))* calculationValue
+calculationValue ::= functionCallStatement | value
+// Function Calls
+functionCallStatement ::= objectReferenceNameList functionReference functionArgumentList
+functionReference ::= KEYWORD | NAME
+private functionArgumentList ::= '(' (calculationStatement ',')* calculationStatement? ')'
+// Inherited
+inheritedStatement ::= 'inherited'
+// For Loop
+loopForStatement ::= 'for' (loopForIndexVariant | loopForEachVariant) 'do' loopForBody
+loopForIndexVariant ::= loopForIndexer ':=' value ('to' | 'downto') value
+loopForIndexer ::= KEYWORD | NAME
+loopForEachVariant ::= value 'in' value
+private loopForBody ::= loopForContent | statement
+private loopForContent ::= 'begin' statementList 'end'
+
+// Common
+// Types
+type ::= stringType | arrayType | referenceType
+referenceType ::= '^'? KEYWORD | NAME
+stringType ::= 'string' stringTypeSize?
+private stringTypeSize ::= '[' value ']'
+arrayType ::= 'packed'? 'array' arrayTypeDefinition
+private arrayTypeDefinition ::= '[' arrayTypeSize ']' ('of' referenceType)?
+private arrayTypeSize ::= ((range | rangeValue) ',')* (range | rangeValue)
+recordType ::= 'record' recordTypeBody
+private recordTypeBody ::= variableDefinition* 'end'
+objectType ::= 'object' objectTypeBase? objectTypeBody
+objectTypeBase ::= '(' (KEYWORD | NAME) ')'
+private objectTypeBody ::= (variableDefinition | functionDefinition)* 'end'
+classType ::= 'class' classTypeBase? classTypeBody
+classTypeBase ::= '(' (KEYWORD | NAME) ')'
+private classTypeBody ::= classTypeContentList* 'end'
+private classTypeContentList ::= (('private' | 'public' | 'published') classTypeContent?) | classTypeContent
+classTypeContent ::= (functionDefinition | propertyDefinition | variableDefinition)+
+// Values
+value ::= DECIMAL | INTEGER | stringValue | referenceValue
+stringValue ::= "'" STRING "'"
+range ::= rangeValue '..' rangeValue
+rangeValue ::= INTEGER | referenceValuePlain
+enumerationValue ::= '(' (value ',')* value ')'
+referenceValue ::= (referenceValueCast ('.' referenceValue)?) | referenceValuePlain
+referenceValueCast ::= objectReferenceNameList referenceName '(' referenceValue ')'
+referenceValuePlain ::= objectReferenceNameList referenceName arraySegment?
+// References
+referenceName ::= KEYWORD | NAME
+private objectReferenceNameList ::= (objectReferenceName '.')*
+objectReferenceName ::= KEYWORD | NAME
+// Other
+arraySegment ::= '[' arraySegmentList ']'
+private arraySegmentList ::= (value ',')* value
