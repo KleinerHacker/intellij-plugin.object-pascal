@@ -18,32 +18,50 @@
 pascalFile ::= programDeclaration | unitDeclaration
 
 programDeclaration ::= 'program' NAME ';' commonDeclarationBody programDeclarationBody
+{
+    methods=[getName]
+}
 unitDeclaration ::= 'unit' NAME ';' commonDeclarationBody
+{
+    methods=[getName]
+}
 
-private commonDeclarationBody ::= usesDeclaration? constantDeclaration? typeDeclaration? variableDeclaration? functionDeclaration?
+private commonDeclarationBody ::= usesDeclaration? (constantDeclaration | typeDeclaration | variableDeclaration | subProgramDeclaration)*
 private programDeclarationBody ::= 'begin' statementList 'end' '.'?
 
 // Uses
 usesDeclaration ::= 'uses' usesValueList
 private usesValueList ::= (usesValue ',')* (usesValue ';')?
 usesValue ::= NAME
+{
+    methods=[getName]
+}
 
 // Constants
 constantDeclaration ::= 'const' constantDefinition*
 constantDefinition ::= constantName constantType? constantValue ';'
+{
+    methods=[getName]
+}
 constantName ::= NAME
+{
+    methods=[getName]
+}
 constantType ::= ':' referenceType
 constantValue ::= '=' value
 
 // Variables
 variableDeclaration ::= 'var' variableDefinition*
 variableDefinition ::= (variableName ',')* variableName ':' variableType ';'
-variableName ::= KEYWORD | NAME
-variableType ::= stringType | arrayType | referenceType
+variableName ::= NAME
+{
+    methods=[getName]
+}
+variableType ::= type
 
 // Properties
-propertyDefinition ::= 'property' propertyName ':' propertyType propertyRead? propertyWrite? propertyDefault? propertyStored? ';' functionFlag*
-propertyName ::= KEYWORD | NAME
+propertyDefinition ::= 'property' propertyName ':' propertyType propertyRead? propertyWrite? propertyDefault? propertyStored? ';' subProgramFlag*
+propertyName ::= NAME
 propertyType ::= type
 propertyRead ::= 'read' propertyReference
 propertyWrite ::= 'write' propertyReference
@@ -54,51 +72,85 @@ propertyDefault ::= 'default' value
 // Types
 typeDeclaration ::= 'type' typeDefinition*
 typeDefinition ::= typeName '=' typeSpecification ';'
-typeName ::= KEYWORD | NAME
+typeName ::= NAME
 typeSpecification ::= classType | objectType | recordType | range | arrayType | referenceType | enumerationValue
 
 // Functions / Procedures
-functionDeclaration ::= functionDefinition+
-functionDefinition ::= functionType objectReferenceNameList functionName functionParameterList? functionReturn? ';' variableDeclaration? functionBody? functionFlag*
-functionType ::= 'function' | 'procedure' | 'constructor' | 'destructor'
-functionName ::= KEYWORD | NAME
-private functionParameterList ::= '(' (functionParameter ',')* functionParameter ')'
-functionParameter ::= (functionParameterName ',')* functionParameterName ':' type functionParameterDefault?
-functionParameterDefault ::= '=' value
-functionParameterName ::= KEYWORD | NAME
-functionReturn ::= ':' type
-private functionBody ::= 'begin' statementList 'end' ';'
-functionFlag ::= functionOverload | functionOverride | functionVirtual | functionDynamic
-functionOverload ::= 'overload' ';'
-functionOverride ::= 'override' ';'
-functionVirtual ::= 'virtual' ';'
-functionDynamic ::= 'dynamic' ';'
+subProgramDeclaration ::= subProgramDefinition+
+subProgramDefinition ::= subProgramType objectReferenceNameList? subProgramName subProgramParameterList? subProgramReturn? ';' subProgramFlag* (variableDeclaration? subProgramBody)?
+{
+    methods=[getType getName isOverload isOverride isVirtual isDynamic]
+}
+subProgramType ::= 'function' | 'procedure' | 'constructor' | 'destructor'
+{
+    methods=[getType]
+}
+subProgramName ::= NAME
+{
+    methods=[getName]
+}
+private subProgramParameterList ::= '(' subProgramParameter (',' subProgramParameter)* ')'
+subProgramParameter ::= 'const'? (subProgramParameterName ',')* subProgramParameterName ':' type subProgramParameterDefault?
+{
+    methods=[isConstant]
+}
+subProgramParameterDefault ::= '=' value
+subProgramParameterName ::= NAME
+{
+    methods=[getName]
+}
+subProgramReturn ::= ':' type
+private subProgramBody ::= 'begin' statementList 'end' ';'
+private subProgramFlag ::= subProgramFlagOverload | subProgramFlagOverride | subProgramFlagVirtual | subProgramFlagDynamic
+subProgramFlagOverload ::= 'overload' ';'
+subProgramFlagOverride ::= 'override' ';'
+subProgramFlagVirtual ::= 'virtual' ';'
+subProgramFlagDynamic ::= 'dynamic' ';'
 
 // (Sub-)Program content
 private statementList ::= (statement ';')*
-statement ::= inheritedStatement | loopForStatement | assignmentStatement | functionCallStatement
+statement ::= inheritedStatement | withStatement | assemblerStatement | loopForStatement | repeatStatement | whileStatement | ifStatement | caseStatement | assignmentStatement | value
 // Assignments
-assignmentStatement ::= referenceValue ':=' calculationStatement
+assignmentStatement ::= referenceValue ':=' (conditionStatement | calculationStatement)
 // Calculation
-calculationStatement ::= (calculationValue ('+'|'-'|'*'|'/'|'mod'|'div'))* calculationValue
-calculationValue ::= functionCallStatement | value
-// Function Calls
-functionCallStatement ::= objectReferenceNameList functionReference functionArgumentList
-functionReference ::= KEYWORD | NAME
-private functionArgumentList ::= '(' (calculationStatement ',')* calculationStatement? ')'
+calculationStatement ::= ('(' calculationContent ')') | calculationContent
+private calculationContent ::= calculationValue (('+'|'-'|'*'|'/'|'mod'|'div') calculationStatement)*
+calculationValue ::= value
 // Inherited
-inheritedStatement ::= 'inherited'
+inheritedStatement ::= 'inherited' value?
 // For Loop
-loopForStatement ::= 'for' (loopForIndexVariant | loopForEachVariant) 'do' loopForBody
+loopForStatement ::= 'for' (loopForIndexVariant | loopForEachVariant) 'do' statementBody
 loopForIndexVariant ::= loopForIndexer ':=' value ('to' | 'downto') value
-loopForIndexer ::= KEYWORD | NAME
+loopForIndexer ::= NAME
 loopForEachVariant ::= value 'in' value
-private loopForBody ::= loopForContent | statement
-private loopForContent ::= 'begin' statementList 'end'
+// Repeat
+repeatStatement ::= 'repeat' statementList 'until' conditionStatement
+// While
+whileStatement ::= 'while' conditionStatement 'do' statementBody ';'
+// Condition
+conditionStatement ::= ('(' conditionDefinitionContent ')') | conditionDefinitionContent
+private conditionDefinitionContent ::= conditionDefinition (('and'|'or'|'xor') conditionStatement)*
+conditionDefinition ::= ('(' conditionContent ')') | conditionContent
+private conditionContent ::= 'not'? calculationStatement ('='|'<>'|'<='|'>='|'<'|'>') (('(' conditionDefinitionContent ')') | calculationStatement)
+// If
+ifStatement ::= 'if' conditionStatement 'then' statementBody
+// Case
+caseStatement ::= 'case' value 'of' caseCondition* caseElse? 'end'
+caseCondition ::= caseSelector ':' statementBody ';'
+caseElse ::= 'else' statementBody ';'
+caseSelector ::= (value ',')* value
+// With
+withStatement ::= 'with' value 'do' statementBody
+// Assembler
+assemblerStatement ::= 'asm' EOL assemblerLine* 'end'
+assemblerLine ::= NAME NAME ',' value EOL
 
 // Common
+// Body
+private statementBody ::= statementContent | statement
+private statementContent ::= 'begin' statementList 'end'
 // Types
-type ::= stringType | arrayType | referenceType
+type ::= stringType | arrayType | recordType | referenceType
 referenceType ::= '^'? KEYWORD | NAME
 stringType ::= 'string' stringTypeSize?
 private stringTypeSize ::= '[' value ']'
@@ -109,25 +161,31 @@ recordType ::= 'record' recordTypeBody
 private recordTypeBody ::= variableDefinition* 'end'
 objectType ::= 'object' objectTypeBase? objectTypeBody
 objectTypeBase ::= '(' (KEYWORD | NAME) ')'
-private objectTypeBody ::= (variableDefinition | functionDefinition)* 'end'
+private objectTypeBody ::= (variableDefinition | subProgramDefinition)* 'end'
 classType ::= 'class' classTypeBase? classTypeBody
 classTypeBase ::= '(' (KEYWORD | NAME) ')'
 private classTypeBody ::= classTypeContentList* 'end'
 private classTypeContentList ::= (('private' | 'public' | 'published') classTypeContent?) | classTypeContent
-classTypeContent ::= (functionDefinition | propertyDefinition | variableDefinition)+
+classTypeContent ::= (subProgramDefinition | propertyDefinition | variableDefinition)+
 // Values
-value ::= DECIMAL | INTEGER | stringValue | referenceValue
+value ::= DECIMAL | INTEGER | stringValue | recordValue | referenceValue | listValue
 stringValue ::= "'" STRING "'"
 range ::= rangeValue '..' rangeValue
 rangeValue ::= INTEGER | referenceValuePlain
 enumerationValue ::= '(' (value ',')* value ')'
-referenceValue ::= (referenceValueCast ('.' referenceValue)?) | referenceValuePlain
-referenceValueCast ::= objectReferenceNameList referenceName '(' referenceValue ')'
-referenceValuePlain ::= objectReferenceNameList referenceName arraySegment?
+referenceValue ::= ((referenceValueCast ('.' referenceValue)?) | referenceValuePlain) referenceValueArgumentList?
+referenceValueArgumentList ::= '(' (calculationStatement ',')* calculationStatement ')'
+referenceValueCast ::= objectReferenceNameList? referenceName '(' referenceValue ')'
+referenceValuePlain ::= objectReferenceNameList? referenceName arraySegment?
+recordValue ::= '(' (recordValueField ';')* recordValueField ')'
+recordValueField ::= recordValueFieldReference ':' value  
+recordValueFieldReference ::= NAME
+listValue ::= '(' (value ',')* value ')'
 // References
-referenceName ::= KEYWORD | NAME
-private objectReferenceNameList ::= (objectReferenceName '.')*
-objectReferenceName ::= KEYWORD | NAME
+referenceName ::= NAME
+private objectReferenceNameList ::= (objectReferenceName '.')+ | (objectReferenceSelf '.')
+objectReferenceName ::= NAME
+objectReferenceSelf ::= 'self'
 // Other
 arraySegment ::= '[' arraySegmentList ']'
 private arraySegmentList ::= (value ',')* value

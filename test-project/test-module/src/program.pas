@@ -53,9 +53,12 @@ begin
 
     for index := tMinValue to 10 do
     begin
-        any := index;
+        if indexer < (8-instance.Value1) then
+        begin
+            with instance do
+            begin
+                Value1 := indexer;
+            end;
+        end;
     end;
-
-    for val in any do
-        t := 'dha';
 end

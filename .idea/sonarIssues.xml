@@ -13,6 +13,76 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../Cryptoplattform/cryptoserver_new/source/core/src/main/java/de/bdr/persotec/crypserv/func/CvCertificateFunctions.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../persotec/connect/source/gui/src/main/java/de/bdr/persotec/connect/ui/jfx/component/MainPaneView.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../persotec/connect/source/gui/src/main/java/de/bdr/persotec/connect/ui/jfx/component/PreviewPane.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../persotec/connect/source/gui/src/main/java/de/bdr/persotec/connect/ui/jfx/component/PreviewPaneView.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../persotec/connect/source/gui/src/main/java/de/bdr/persotec/connect/ui/jfx/component/PreviewPaneViewModel.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../persotec/connect/source/gui/src/main/resources/css/main.css">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../persotec/connect/source/gui/src/main/resources/de/bdr/persotec/connect/ui/jfx/component/MainPaneView.fxml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../persotec/connect/source/gui/src/main/resources/de/bdr/persotec/connect/ui/jfx/component/OrderListView.fxml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../persotec/connect/source/gui/src/main/resources/de/bdr/persotec/connect/ui/jfx/component/OrderPaneView.fxml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../persotec/connect/source/gui/src/main/resources/de/bdr/persotec/connect/ui/jfx/component/PreviewPaneView.fxml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../persotec/connect/source/gui/src/main/resources/de/bdr/persotec/connect/ui/jfx/component/ProcessPaneView.fxml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../persotec/connect/source/gui/src/main/resources/de/bdr/persotec/connect/ui/jfx/component/StatusPaneView.fxml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../persotec/connect/source/products/lgk/src/main/config/config-pfeifchr.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../persotec/connect/source/products/lgk/src/test/java/de/bdr/persotec/connect/products/lgk/test/manual/StartAll.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/.idea/workspace.xml">
           <value>
             <set />
@@ -713,6 +783,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/org/pcsoft/plugins/intellij/pascal/language/PascalProgramFileType.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/org/pcsoft/plugins/intellij/pascal/language/PascalUnitFileType.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/org/pcsoft/plugins/intellij/pascal/language/annotator/PropertySpecialValueTypeCheckAnnotator.java">
           <value>
             <set />
@@ -783,6 +863,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/org/pcsoft/plugins/intellij/pascal/language/parser/PascalParserUtil.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/org/pcsoft/plugins/intellij/pascal/language/parser/iss.bnf">
           <value>
             <set />
@@ -824,6 +909,56 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/org/pcsoft/plugins/intellij/pascal/language/parser/psi/element/PascalFile.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/org/pcsoft/plugins/intellij/pascal/language/structure/folding/PascalConstantFoldingBuilder.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/org/pcsoft/plugins/intellij/pascal/language/structure/folding/PascalFoldingBuilder.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/org/pcsoft/plugins/intellij/pascal/language/structure/folding/PascalSubProgramFoldingBuilder.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/org/pcsoft/plugins/intellij/pascal/language/structure/folding/PascalTypeFoldingBuilder.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/org/pcsoft/plugins/intellij/pascal/language/structure/folding/PascalUsesFoldingBuilder.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/org/pcsoft/plugins/intellij/pascal/language/structure/folding/PascalVariableFoldingBuilder.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/org/pcsoft/plugins/intellij/pascal/language/type/CodeType.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/org/pcsoft/plugins/intellij/pascal/language/type/FunctionAccessor.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/org/pcsoft/plugins/intellij/pascal/language/type/PascalFileType.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/org/pcsoft/plugins/intellij/pascal/language/type/SubProgramType.java">
           <value>
             <set />
           </value>

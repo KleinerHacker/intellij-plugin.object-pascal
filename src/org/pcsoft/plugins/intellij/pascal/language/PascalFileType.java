@@ -1,5 +1,6 @@
 package org.pcsoft.plugins.intellij.pascal.language;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

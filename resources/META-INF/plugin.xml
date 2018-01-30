@@ -30,6 +30,13 @@
         <!-- Highlighting -->
         <lang.syntaxHighlighterFactory language="Object Pascal" implementationClass="org.pcsoft.plugins.intellij.pascal.language.highlighting.PascalSyntaxHighlighterFactory"/>
         <colorSettingsPage implementation="org.pcsoft.plugins.intellij.pascal.language.highlighting.PascalColoringPage"/>
+        <!-- Structure -->
+        <lang.foldingBuilder language="Object Pascal" implementationClass="org.pcsoft.plugins.intellij.pascal.language.structure.folding.PascalUsesFoldingBuilder"/>
+        <lang.foldingBuilder language="Object Pascal" implementationClass="org.pcsoft.plugins.intellij.pascal.language.structure.folding.PascalConstantFoldingBuilder"/>
+        <lang.foldingBuilder language="Object Pascal" implementationClass="org.pcsoft.plugins.intellij.pascal.language.structure.folding.PascalTypeFoldingBuilder"/>
+        <lang.foldingBuilder language="Object Pascal" implementationClass="org.pcsoft.plugins.intellij.pascal.language.structure.folding.PascalVariableFoldingBuilder"/>
+        <lang.foldingBuilder language="Object Pascal" implementationClass="org.pcsoft.plugins.intellij.pascal.language.structure.folding.PascalSubProgramFoldingBuilder"/>
+        <lang.foldingBuilder language="Object Pascal" implementationClass="org.pcsoft.plugins.intellij.pascal.language.structure.folding.PascalTypeDefinitionFoldingBuilder"/>
         <!-- Common -->
         <lang.quoteHandler language="Object Pascal" implementationClass="org.pcsoft.plugins.intellij.pascal.language.common.PascalQuoteHandler"/>
         <lang.braceMatcher language="Object Pascal" implementationClass="org.pcsoft.plugins.intellij.pascal.language.common.PascalBraceMatcher"/>

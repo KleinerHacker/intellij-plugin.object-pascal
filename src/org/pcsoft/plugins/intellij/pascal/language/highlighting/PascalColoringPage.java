@@ -40,12 +40,70 @@ public class PascalColoringPage implements ColorSettingsPage {
     @Override
     public String getDemoText() {
         return "// Example Pascal Code\n" +
-                "PROGRAM MyProgram;\n\n" +
-                "USES MyLibrary;\n\n" +
-                "CONST MY_VALUE_1 = 'Word'; MY_VALUE_2 : REAL = 0.2;\n\n" +
-                "VAR myVar : Real = 1.3\n\n" +
-                "BEGIN\n" +
-                "END";
+                "program MyProgram;\n" +
+                "\n" +
+                "uses MyUnit;\n" +
+                "\n" +
+                "const\n" +
+                "    myConst = 'my''string';\n" +
+                "    myValueConst : real = 12.0;\n" +
+                "    //myArrayConst : array [1..100] of integer; //TODO\n" +
+                "\n" +
+                "type\n" +
+                "    tMyEnum = (Jan, Feb, Mar);\n" +
+                "    tMyRange = 10..20;\n" +
+                "    tMyArray = array[tMyRange,1..10] of real;\n" +
+                "    tMyRecord = record\n" +
+                "        val1 : real;\n" +
+                "        val2, val3 : tMyEnum;\n" +
+                "    end;\n" +
+                "    tMyObject = object\n" +
+                "        val1 : integer;\n" +
+                "        function GetVal1 : integer;\n" +
+                "        procedure SetVal1(val1 : integer);\n" +
+                "    end;\n" +
+                "    tMyClass = class\n" +
+                "        private\n" +
+                "            val1 : string[100];\n" +
+                "        public\n" +
+                "            function GetVal1 : integer;\n" +
+                "            procedure SetVal1(val1 : integer);\n" +
+                "        published\n" +
+                "            property Value1 : integer read GetVal1 write SetVal1;\n" +
+                "    end;\n" +
+                "\n" +
+                "var\n" +
+                "    instance : tMyClass;\n" +
+                "\n" +
+                "function tMyClass.GetVal1 : integer;\n" +
+                "begin\n" +
+                "    result := self.val1;\n" +
+                "end;\n" +
+                "\n" +
+                "procedure tMyClass.SetVal1(val1 : integer);\n" +
+                "var\n" +
+                "    a : real;\n" +
+                "begin\n" +
+                "    self.val1 := val1;\n" +
+                "end;\n" +
+                "\n" +
+                "begin\n" +
+                "    instance := tMyClass.Create;\n" +
+                "    instance.Value1 := 10;\n" +
+                "    tMyClass(instance).Value1 := 9;\n" +
+                "    tAny(tMyClass(instance).Value1).val := 9;\n" +
+                "\n" +
+                "    for index := tMinValue to 10 do\n" +
+                "    begin\n" +
+                "        if indexer < (8-instance.Value1) then\n" +
+                "        begin\n" +
+                "            with instance do\n" +
+                "            begin\n" +
+                "                Value1 := indexer;\n" +
+                "            end;\n" +
+                "        end;\n" +
+                "    end;\n" +
+                "end.";
     }
 
     @Nullable
